@@ -2,11 +2,10 @@ package com.levimartines.springboot2essentials;
 
 import com.levimartines.springboot2essentials.model.Anime;
 import com.levimartines.springboot2essentials.repository.AnimeRepository;
+import java.util.Arrays;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Arrays;
 
 @SpringBootApplication
 public class Springboot2EssentialsApplication implements CommandLineRunner {
@@ -23,6 +22,12 @@ public class Springboot2EssentialsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        repository.saveAll(Arrays.asList(new Anime(null, "DBZ"), new Anime(null, "Berzeker")));
+        repository.saveAll(Arrays.asList(
+            new Anime(null, "Berzeker"),
+            new Anime(null, "Dragon Ball Kai"),
+            new Anime(null, "Dragon Ball Z"),
+            new Anime(null, "Dragon Ball GT"),
+            new Anime(null, "Dragon Ball Super")
+        ));
     }
 }
