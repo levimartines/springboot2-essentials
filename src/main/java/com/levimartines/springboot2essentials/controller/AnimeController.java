@@ -7,6 +7,7 @@ import com.levimartines.springboot2essentials.util.DateUtils;
 import com.levimartines.springboot2essentials.util.URL;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -55,7 +56,7 @@ public class AnimeController {
     }
 
     @PostMapping
-    public ResponseEntity<Anime> create(@RequestBody AnimeDTO dto) {
+    public ResponseEntity<Anime> create(@Valid @RequestBody AnimeDTO dto) {
         Anime anime = new Anime(dto);
         service.save(anime);
         return ResponseEntity.ok(anime);

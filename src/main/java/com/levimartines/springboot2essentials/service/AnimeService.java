@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class AnimeService {
             .orElseThrow(() -> new ResourceNotFoundException("Anime não encontrado."));
     }
 
+    @Transactional(readOnly = true)
     public Page<Anime> search(String name, Integer page, Integer linesPerPage, String orderBy,
         String direction) {
         PageRequest pageRequest = PageRequest
@@ -33,6 +35,7 @@ public class AnimeService {
         return repository.findDistinctByNameContaining(name, pageRequest);
     }
 
+    @Transactional
     public void save(Anime anime) {
         repository.save(anime);
     }
