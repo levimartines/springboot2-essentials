@@ -3,6 +3,7 @@ package com.levimartines.springboot2essentials.controller;
 import com.levimartines.springboot2essentials.dto.AnimeDTO;
 import com.levimartines.springboot2essentials.model.Anime;
 import com.levimartines.springboot2essentials.service.AnimeService;
+import com.levimartines.springboot2essentials.service.KitsuAnimesService;
 import com.levimartines.springboot2essentials.util.DateUtils;
 import com.levimartines.springboot2essentials.util.URL;
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnimeController {
 
     private final AnimeService service;
+    private final KitsuAnimesService kitsuAnimesService;
     private final DateUtils dateUtils;
 
     @GetMapping
@@ -48,6 +50,12 @@ public class AnimeController {
         String nameDecoded = URL.decodeParam(name);
         Page<Anime> list = service.search(nameDecoded, page, linesPerPage, orderBy, direction);
         return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/kitsu")
+    public ResponseEntity<List<Anime>> getKitsuAnimesList(
+        @RequestParam(value = "page", defaultValue = "0") Integer page) {
+        return ResponseEntity.ok(kitsuAnimesService.getAnimesKitsuApi(page));
     }
 
     @GetMapping("/{id}")
