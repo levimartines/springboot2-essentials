@@ -20,7 +20,7 @@ public class Anime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ANIME_ID")
     private Long id;
-    @Column(name = "ANIME_NAME")
+    @Column(name = "ANIME_NAME", nullable = false)
     private String name;
 
     public Anime(AnimeDTO dto) {
