@@ -6,6 +6,7 @@ import com.levimartines.springboot2essentials.service.AnimeService;
 import com.levimartines.springboot2essentials.service.KitsuAnimesService;
 import com.levimartines.springboot2essentials.util.DateUtils;
 import com.levimartines.springboot2essentials.util.URL;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("animes")
@@ -65,9 +67,11 @@ public class AnimeController {
 
     @PostMapping
     public ResponseEntity<Anime> create(@Valid @RequestBody AnimeDTO dto) {
-        Anime anime = new Anime(dto);
-        service.save(anime);
-        return ResponseEntity.ok(anime);
+      Anime anime = new Anime(dto);
+      service.save(anime);
+      URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+          .path("/{id}").buildAndExpand(anime.getId()).toUri();
+      return ResponseEntity.created(uri).body(anime);
     }
 
     @PutMapping("/{id}")

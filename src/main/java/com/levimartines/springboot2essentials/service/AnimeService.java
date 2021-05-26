@@ -36,8 +36,9 @@ public class AnimeService {
     }
 
     @Transactional
-    public void save(Anime anime) {
-        repository.save(anime);
+    public Anime save(Anime anime) {
+        anime = repository.save(anime);
+        return anime;
     }
 
     public void delete(Long id) {
@@ -48,7 +49,6 @@ public class AnimeService {
     public Anime update(Long id, AnimeDTO dto) {
         Anime animeToUpdate = findById(id);
         animeToUpdate.setName(dto.getName());
-        save(animeToUpdate);
-        return animeToUpdate;
+        return save(animeToUpdate);
     }
 }
