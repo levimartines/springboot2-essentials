@@ -23,7 +23,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<StandardError> validation(MethodArgumentNotValidException exception,
+    public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException exception,
         HttpServletRequest request) {
 
         ValidationError error = new ValidationError("Validation error",
