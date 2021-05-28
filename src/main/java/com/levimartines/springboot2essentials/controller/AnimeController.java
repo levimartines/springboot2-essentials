@@ -72,11 +72,11 @@ public class AnimeController {
 
     @PostMapping
     public ResponseEntity<Anime> create(@Valid @RequestBody AnimeDTO dto) {
-      Anime anime = new Anime(dto);
-      service.save(anime);
-      URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-          .path("/{id}").buildAndExpand(anime.getId()).toUri();
-      return ResponseEntity.created(uri).body(anime);
+        Anime anime = new Anime(dto);
+        service.save(anime);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}").buildAndExpand(anime.getId()).toUri();
+        return ResponseEntity.created(uri).body(anime);
     }
 
     @PutMapping("/{id}")

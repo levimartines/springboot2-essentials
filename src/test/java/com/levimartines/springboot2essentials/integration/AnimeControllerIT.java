@@ -34,71 +34,71 @@ import org.springframework.http.ResponseEntity;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AnimeControllerIT {
 
-  @Autowired
-  private TestRestTemplate template;
+    @Autowired
+    private TestRestTemplate template;
 
-  @LocalServerPort
-  private int port;
+    @LocalServerPort
+    private int port;
 
-  @MockBean
-  private AnimeRepository repository;
+    @MockBean
+    private AnimeRepository repository;
 
-  @BeforeEach
-  void setUp() {
-    Anime anime = new Anime(1L, "Death Note");
-    Anime anime2 = new Anime(2L, "Naruto");
+    @BeforeEach
+    void setUp() {
+        Anime anime = new Anime(1L, "Death Note");
+        Anime anime2 = new Anime(2L, "Naruto");
 
-    given(repository.findDistinctByNameContaining(any(), any()))
-        .willReturn(new PageImpl<>(List.of(anime, anime2)));
-    given(repository.findAll()).willReturn(Arrays.asList(anime, anime2));
-    given(repository.findById(1L)).willReturn(Optional.of(anime));
-    given(repository.save(any())).willReturn(anime);
-  }
+        given(repository.findDistinctByNameContaining(any(), any()))
+            .willReturn(new PageImpl<>(List.of(anime, anime2)));
+        given(repository.findAll()).willReturn(Arrays.asList(anime, anime2));
+        given(repository.findById(1L)).willReturn(Optional.of(anime));
+        given(repository.save(any())).willReturn(anime);
+    }
 
-  @Test
-  void getPage() {
-    Page<Anime> animes = template
-        .exchange("/animes/search", HttpMethod.GET, null,
-            new ParameterizedTypeReference<PageableResponse<Anime>>() {
-            }).getBody();
+    @Test
+    void getPage() {
+        Page<Anime> animes = template
+            .exchange("/animes/search", HttpMethod.GET, null,
+                new ParameterizedTypeReference<PageableResponse<Anime>>() {
+                }).getBody();
 
-    assertNotNull(animes);
-    assertEquals(2, animes.getTotalElements());
-    then(repository).should().findDistinctByNameContaining(anyString(), any());
-  }
+        assertNotNull(animes);
+        assertEquals(2, animes.getTotalElements());
+        then(repository).should().findDistinctByNameContaining(anyString(), any());
+    }
 
-  @Test
-  void getByIdNotFound() {
-    ResponseEntity<Anime> response = template
-        .exchange("/animes/2", HttpMethod.GET, null, Anime.class);
+    @Test
+    void getByIdNotFound() {
+        ResponseEntity<Anime> response = template
+            .exchange("/animes/2", HttpMethod.GET, null, Anime.class);
 
-    assertNotNull(response);
-    assertEquals(404, response.getStatusCodeValue());
-    then(repository).should().findById(anyLong());
-  }
+        assertNotNull(response);
+        assertEquals(404, response.getStatusCodeValue());
+        then(repository).should().findById(anyLong());
+    }
 
-  @Test
-  void getByIdOk() {
-    ResponseEntity<Anime> response = template
-        .exchange("/animes/1", HttpMethod.GET, null, Anime.class);
+    @Test
+    void getByIdOk() {
+        ResponseEntity<Anime> response = template
+            .exchange("/animes/1", HttpMethod.GET, null, Anime.class);
 
-    assertEquals(200, response.getStatusCodeValue());
-    assertNotNull(response);
-    assertNotNull(response.getBody());
-    assertEquals(1L, response.getBody().getId());
-    then(repository).should().findById(anyLong());
-  }
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(1L, response.getBody().getId());
+        then(repository).should().findById(anyLong());
+    }
 
-  @Test
-  void postInvalidData() {
-    AnimeDTO dto = new AnimeDTO("");
-    ResponseEntity<ValidationError> response = template
-        .postForEntity("/animes", dto, ValidationError.class);
+    @Test
+    void postInvalidData() {
+        AnimeDTO dto = new AnimeDTO("");
+        ResponseEntity<ValidationError> response = template
+            .postForEntity("/animes", dto, ValidationError.class);
 
-    assertEquals(400, response.getStatusCodeValue());
-    assertNotNull(response);
-    assertNotNull(response.getBody());
-    assertEquals(2, response.getBody().getErrors().size());
-    then(repository).should(times(0)).findById(anyLong());
-  }
+        assertEquals(400, response.getStatusCodeValue());
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().getErrors().size());
+        then(repository).should(times(0)).findById(anyLong());
+    }
 }

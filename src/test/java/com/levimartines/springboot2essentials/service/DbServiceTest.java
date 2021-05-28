@@ -16,20 +16,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class DbServiceTest {
 
-  @Mock
-  private AnimeRepository repository;
+    @Mock
+    private AnimeRepository repository;
 
-  @InjectMocks
-  private DbService service;
+    @InjectMocks
+    private DbService service;
 
 
-  @Test
-  void findById() {
-    given(repository.saveAll(any())).willReturn(Collections.singletonList(new Anime(1L, "Test")));
+    @Test
+    void findById() {
+        given(repository.saveAll(any()))
+            .willReturn(Collections.singletonList(new Anime(1L, "Test")));
 
-    service.instantiateTestDatabase();
+        service.instantiateTestDatabase();
 
-    then(repository).should().saveAll(anyList());
-  }
+        then(repository).should().saveAll(anyList());
+    }
 
 }
