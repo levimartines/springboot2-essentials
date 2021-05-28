@@ -26,6 +26,8 @@ public class DbService {
     public void instantiateTestDatabase() {
         userRepository.save(
             new User(null, "Admin", "admin", encoder.encode("admin"), "ROLE_USER,ROLE_ADMIN"));
+        userRepository.save(
+            new User(null, "User", "user", encoder.encode("user"), "ROLE_USER"));
 
         animeRepository.saveAll(Arrays.asList(
             new Anime(null, "Berzeker"),
