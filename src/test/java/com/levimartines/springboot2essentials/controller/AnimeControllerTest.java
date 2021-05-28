@@ -42,7 +42,7 @@ class AnimeControllerTest {
   void findById() {
     given(service.findById(1L)).willReturn(new Anime(1L, "Test Anime"));
 
-    Anime anime = controller.findById(1L).getBody();
+    Anime anime = controller.findById(1L, null).getBody();
 
     assertNotNull(anime);
     assertEquals("Test Anime", anime.getName());

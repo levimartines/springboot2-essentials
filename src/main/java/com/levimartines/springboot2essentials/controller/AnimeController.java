@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,7 +64,9 @@ public class AnimeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Anime> findById(@PathVariable Long id) {
+    public ResponseEntity<Anime> findById(@PathVariable Long id,
+        @AuthenticationPrincipal UserDetails userDetails) {
+        log.info("User logged in: {}", userDetails);
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -75,11 +80,13 @@ public class AnimeController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Anime> update(@PathVariable Long id, @RequestBody AnimeDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
