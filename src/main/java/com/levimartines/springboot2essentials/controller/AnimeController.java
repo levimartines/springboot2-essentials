@@ -6,6 +6,9 @@ import com.levimartines.springboot2essentials.service.AnimeService;
 import com.levimartines.springboot2essentials.service.KitsuAnimesService;
 import com.levimartines.springboot2essentials.util.DateUtils;
 import com.levimartines.springboot2essentials.util.URL;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,6 +49,7 @@ public class AnimeController {
     }
 
     @GetMapping("/search")
+    @Operation(summary = "List all animes paginated and sorted")
     public ResponseEntity<Page<Anime>> findPage(
         @RequestParam(value = "name", defaultValue = "") String name,
         @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -87,6 +91,10 @@ public class AnimeController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Successful operation"),
+        @ApiResponse(responseCode = "404", description = "Anime was not found")
+    })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
