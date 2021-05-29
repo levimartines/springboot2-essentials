@@ -1,3 +1,14 @@
 spring:
   profiles:
     active: dev
+info:
+  app: SpringBoot2 Essentials
+  github: https://github.com/levimartines/springboot2-essentials.git
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics
+  endpoint:
+    health:
+      show-details: when_authorized
