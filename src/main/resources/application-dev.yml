@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/animes
     username: postgres
     password: admin
     driver-class-name: org.postgresql.Driver
@@ -9,3 +9,8 @@ spring:
     hibernate:
       ddl-auto: create
     database: postgresql
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

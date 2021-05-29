@@ -13,20 +13,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "USERS")
+@Entity(name = "\"USER\"")
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USERS_ID")
+    @Column(name = "USER_ID")
     private Long id;
-    @Column(name = "USERS_NAME", nullable = false)
+    @Column(name = "USER_NAME", nullable = false)
     private String name;
-    @Column(name = "USERS_LOGIN", nullable = false)
+    @Column(name = "USER_LOGIN", nullable = false)
     private String login;
-    @Column(name = "USERS_PASSWORD", nullable = false)
+    @Column(name = "USER_PASSWORD", nullable = false)
     private String password;
-    @Column(name = "USERS_AUTHORITIES", nullable = false)
+    @Column(name = "USER_AUTHORITIES", nullable = false)
     private String authorities;
 
 }
